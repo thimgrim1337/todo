@@ -4,7 +4,49 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>ToDo</title>
   </head>
-  <body></body>
+  <body>
+    <div class="content">
+      <aside>
+        <h2>Your Projects</h2>
+        <ul class="projects">
+          <li class="project">
+            <a href="#">Project 1</a><i class="fa-regular fa-trash-can"></i>
+          </li>
+          <li class="project">
+            <a href="#">Project 2</a><i class="fa-regular fa-trash-can"></i>
+          </li>
+          <li class="project">
+            <a href="#">Project 3</a><i class="fa-regular fa-trash-can"></i>
+          </li>
+          <li class="project">
+            <a href="#">Project 4</a><i class="fa-regular fa-trash-can"></i>
+          </li>
+        </ul>
+        <button class="btn-project">
+          <i class="fa-solid fa-circle-plus"></i>New Project
+        </button>
+      </aside>
+      <main class="todo-list">
+        <h1>Your Tasks</h1>
+        <div class="todo">
+          <h2 class="title">Test todo</h2>
+          <p class="description">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione,
+            nobis!
+          </p>
+          <p class="dueDate">02/03/2023</p>
+          <button class="complete">Complete</button>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>
