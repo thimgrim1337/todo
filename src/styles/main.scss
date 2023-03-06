@@ -97,12 +97,20 @@ aside {
         }
        }
    }
+
+   label[for='newProject'] {
+  
+   }
 }
 
 
 .todo-list {
     padding: 0 2rem;
     overflow: scroll;
+
+    h1 {
+        color: #404040;
+    }
 
 
     .list {
@@ -130,7 +138,7 @@ aside {
             transition: .2s;
 
             &:hover {
-                background-color: rgba($color: red, $alpha: 0.2);
+                opacity: 0.5;
             }
         }
         }
