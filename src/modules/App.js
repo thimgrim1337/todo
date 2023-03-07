@@ -11,12 +11,15 @@ export default class App {
   }
 
   checkName = (name) => {
-    if (this.projects.find((project) => (project.name = name)) == undefined)
-      return name;
+    if (this.projects.find((project) => project.name == name) == undefined)
+      return true;
+
+    return false;
   };
 
-  createProject = (name) =>
-    this.projects.push(new Project(this.checkName(name)));
+  createProject = (name) => {
+    if (this.checkName(name)) this.projects.push(new Project(name));
+  };
 
   deleteProject = (name) => {
     if (
@@ -33,5 +36,6 @@ export default class App {
     return true;
   };
 
-  getAllProject = () => this.projects;
+  getDefaultProjects = () => this._defaultProjects;
+  getAllProjects = () => this.projects;
 }

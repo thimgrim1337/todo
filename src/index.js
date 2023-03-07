@@ -3,32 +3,55 @@ import App from './modules/App';
 
 const app = new App();
 
-function createProjectList() {
+function initProjectList() {
   const projectsList = document.querySelector('.projects');
-  const projects = app.getAllProject();
+  const defaultProjects = app.getDefaultProjects();
 
-  projects.forEach((project) => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    const i = document.createElement('i');
-    li.classList.add('project');
-    i.classList.add('fa-regular', 'fa-trash-can');
-
-    a.textContent = project.name;
-    a.href = '#';
-
-    li.append(a, i);
-    projectsList.appendChild(li);
+  defaultProjects.forEach((project) => {
+    projectsList.appendChild(createProjectListItem(project.name));
   });
-
-  const deleteProjectIcons = document.querySelectorAll('.fa-trash-can');
-  deleteProjectIcons.forEach((icon) =>
-    icon.addEventListener('click', () => {
-      if (app.deleteProject(icon.previousSibling.textContent)) {
-        icon.parentElement.remove();
-      }
-    })
-  );
 }
 
-createProjectList();
+function createProjectListItem(name) {
+  const li = document.createElement('li');
+  const a = document.createElement('a');
+
+  li.classList.add('project');
+
+  a.textContent = name;
+  a.href = '#';
+
+  li.appendChild(a);
+  return li;
+}
+
+function createProjectListRemoveIcon() {
+  const icon = document.createElement('i');
+  icon.classList.add('fa-regular', 'fa-trash-can');
+  return icon;
+}
+
+function createProject(name) {
+  if (!app.checkName(name)) return;
+  const projectsList = document.querySelector('.projects');
+  const project = createProjectListItem(name);
+  project.appendChild(createProjectListRemoveIcon());
+  projectsList.appendChild(project);
+}
+
+initProjectList();
+
+// console.log(app.getAllProjects());
+
+// function createProjectList() {
+//   const deleteProjectIcons = document.querySelectorAll('.fa-trash-can');
+//   deleteProjectIcons.forEach((icon) =>
+//     icon.addEventListener('click', () => {
+//       if (app.deleteProject(icon.previousSibling.textContent)) {
+//         icon.parentElement.remove();
+//       }
+//     })
+//   );
+// }
+
+// createProjectList();
