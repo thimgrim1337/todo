@@ -1,13 +1,12 @@
 import Todo from './Todo';
 
 export default class Project {
-  constructor(name = 'No name') {
+  constructor(name) {
     this.todos = [];
-    this.name = this.setName(name);
+    this.name = name;
   }
 
-  setName = (name) =>
-    name != '' ? (this.name = name) : (this.name = 'No name');
+  setName = (name) => (this.name = name);
 
   getAllTodos = () => this.todos;
 
