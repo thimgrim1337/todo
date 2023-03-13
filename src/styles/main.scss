@@ -52,9 +52,10 @@ aside {
                 font-weight: bolder;
             }
 
+
             i {
                 transition: .2s;
-
+                margin-left: .5rem;
                 &:hover {
                 cursor: pointer;
                 color: red;

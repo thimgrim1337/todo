@@ -25,6 +25,7 @@ export default class App {
     );
   };
 
+  getProject = (name) => this.projects.find((project) => project.name == name);
   getDefaultProjects = () => this._defaultProjects;
   getAllProjects = () => this.projects;
 }
