@@ -27,6 +27,12 @@ export default class Todo {
   setDueDate = (dueDate) => (this.dueDate = dateFormater(dueDate));
   setPriority = (priority) => (this.priority = priority);
   setComplete = () => (this.isComplete = !this.isComplete);
+
+  getTitle = () => this.title;
+  getDescription = () => this.description;
+  getDueDate = () => this.dueDate;
+  getPriority = () => this.priority;
+  getIsComplete = () => this.isComplete;
 }
 
 const dateFormater = (date) => format(date, 'dd/MM/yyy');

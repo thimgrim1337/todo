@@ -1,8 +1,9 @@
 import { app } from '../../index';
+import renderTodoList from './todoList';
 
-let selectedProject;
+export let selectedProject;
 
-export default function initProjectList() {
+export default function renderProjectList() {
   const projectsList = document.querySelector('.projects');
   const defaultProjects = app.getDefaultProjects();
   const newProjectLabel = document.querySelector('[for="newProject"]');
@@ -86,6 +87,7 @@ function setActive(project) {
   selectedProject = project;
   project.classList.add('active');
   displayActiveProjectName();
+  renderTodoList();
 }
 
 function displayActiveProjectName() {
