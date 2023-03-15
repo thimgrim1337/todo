@@ -1,5 +1,6 @@
 import { app } from '../../index';
 import renderTodoList from './todoList';
+import makeFieldEditable from './makeFieldEditable';
 
 export let selectedProject;
 
@@ -41,6 +42,7 @@ function createProjectListItem(name) {
 
   li.textContent = name;
   li.classList.add('project');
+  li.setAttribute('data-name', name);
   li.addEventListener('click', () => setActive(li));
 
   return li;
@@ -63,10 +65,23 @@ function createProject(name) {
   project.appendChild(createProjectListRemoveIcon(name));
   project.addEventListener('dblclick', makeFieldEditable);
   projectsList.appendChild(project);
+
   app.createProject(name);
   setActive(project);
 
   return true;
+}
+
+export function renameProject(element, newName) {
+  const oldName = element.getAttribute('data-name');
+
+  app.getProject(oldName).setName(newName);
+  document
+    .querySelector(`[data-name="${oldName}"]`)
+    .setAttribute('data-name', newName);
+  document
+    .querySelector(`[data-name="${newName}"]`)
+    .appendChild(createProjectListRemoveIcon(newName));
 }
 
 function deleteProject(e) {
@@ -93,30 +108,4 @@ function setActive(project) {
 function displayActiveProjectName() {
   document.querySelector('#activeProjectName').textContent =
     document.querySelector('.active').textContent;
-}
-
-function makeFieldEditable(e) {
-  const currentElement = e.target;
-  const currentName = e.target.textContent;
-  const input = document.createElement('input');
-  input.type = 'text';
-
-  e.target.parentElement.replaceChild(input, currentElement);
-  input.value = currentName;
-
-  input.addEventListener('keydown', changeName);
-  input.addEventListener('focusout', changeName);
-
-  function changeName(e) {
-    if ((e.type == 'keydown' && e.key == 'Enter') || e.type == 'focusout') {
-      const newName = e.target.value;
-      currentElement.textContent = newName;
-      e.target.parentElement.replaceChild(currentElement, input);
-      app.getProject(currentName).setName(newName);
-      currentElement.appendChild(createProjectListRemoveIcon(newName));
-
-      input.removeEventListener('keydown', changeName);
-      input.removeEventListener('focusout', changeName);
-    }
-  }
 }

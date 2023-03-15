@@ -28,6 +28,7 @@ export default class Todo {
   setPriority = (priority) => (this.priority = priority);
   setComplete = () => (this.isComplete = !this.isComplete);
 
+  getId = () => this.id;
   getTitle = () => this.title;
   getDescription = () => this.description;
   getDueDate = () => this.dueDate;
@@ -35,5 +36,5 @@ export default class Todo {
   getIsComplete = () => this.isComplete;
 }
 
-const dateFormater = (date) => format(date, 'dd/MM/yyy');
+const dateFormater = (date) => format(date, 'yyyy-MM-dd');
 const uuidGenerator = () => uuid();

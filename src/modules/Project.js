@@ -1,5 +1,3 @@
-import Todo from './Todo';
-
 export default class Project {
   constructor(name) {
     this.todos = [];
@@ -10,13 +8,13 @@ export default class Project {
 
   getAllTodos = () => this.todos;
 
-  addToProject = () => this.todos.push(new Todo());
+  createTodo = (todo) => this.todos.push(todo);
 
-  removeFromProject = (id) =>
+  removeTodo = (id) =>
     this.todos.splice(
       this.todos.findIndex((todo) => (todo.id = id)),
       1
     );
 
-  searchTodo = (id) => this.todos.find((todo) => todo.id === id);
+  getTodo = (id) => this.todos.find((todo) => todo.id === id);
 }
