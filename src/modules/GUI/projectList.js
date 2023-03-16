@@ -82,6 +82,8 @@ export function renameProject(element, newName) {
   document
     .querySelector(`[data-name="${newName}"]`)
     .appendChild(createProjectListRemoveIcon(newName));
+
+  setActive(document.querySelector(`[data-name="${newName}"]`));
 }
 
 function deleteProject(e) {

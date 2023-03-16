@@ -64,6 +64,10 @@ aside {
             }
 
         }
+
+        input {
+            font-size: 1.2rem;
+        }
     }
 
     .btn-project {
@@ -111,6 +115,7 @@ aside {
         font-size: 1.1rem;
     }
    }
+
 }
 
 
@@ -133,24 +138,42 @@ aside {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: space-between;
         text-align: center;
         border: 2px solid #c7c9ca;
         border-radius: 2px;
+        overflow: hidden;
+        transition: .2s;
 
-        .description {
-            padding: 0 .8rem;
-        }
-
-        .btn-complete {
-            align-self: stretch;
-            background: red;
-            color: white;
-            transition: .2s;
-
-            &:hover {
-                opacity: 0.5;
+            .description {
+                padding: 0 .8rem;
             }
-        }
+
+            .btn-complete {
+                align-self: stretch;
+                justify-self: flex-end;
+                background: red;
+                color: white;
+                transition: .2s;
+
+                    &:hover {
+                        opacity: 0.5;
+                    }
+                }
+
+            .btn-remove {
+                display: none;
+            }
+
+            &:hover .btn-remove {
+                display: block;
+                transition: .2s;
+                &:hover {
+                    color: red;
+                    font-weight: bolder;
+                }
+            }
+
         }
 
         .btn-add {
@@ -164,8 +187,23 @@ aside {
                 transform: rotate(45deg)
             }
         }
+
+        input, textarea {
+            width: 90%;
+            max-width: 100%;
+            height: 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        textarea {
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+        }
     }
 }
+
+
 
 .btn {
     padding: .5rem;

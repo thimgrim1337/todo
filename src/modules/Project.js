@@ -12,7 +12,7 @@ export default class Project {
 
   removeTodo = (id) =>
     this.todos.splice(
-      this.todos.findIndex((todo) => (todo.id = id)),
+      this.todos.findIndex((todo) => todo.id == id),
       1
     );
 

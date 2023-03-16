@@ -15,7 +15,8 @@ export default function makeFieldEditable(e) {
 
   function editField(e) {
     if (e.type == 'keydown' && e.key == 'Enter') {
-      const newValue = e.target.value;
+      const newValue =
+        e.target.value != '' ? e.target.value : 'Fill this field';
       currentElement.textContent = newValue;
       e.target.parentElement.replaceChild(currentElement, input);
 
@@ -33,7 +34,6 @@ function getInput(element) {
   if (element.hasAttribute('data-date')) {
     const datetime = document.createElement('input');
     datetime.type = 'date';
-    datetime.pattern = '(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[012]).[0-9]{4}';
     return datetime;
   }
 

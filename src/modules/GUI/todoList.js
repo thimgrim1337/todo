@@ -34,7 +34,8 @@ function renderTodo(todo) {
   const title = document.createElement('h2');
   const description = document.createElement('p');
   const dueDate = document.createElement('p');
-  const btn = document.createElement('button');
+  const btnComplete = document.createElement('button');
+  const btnRemove = document.createElement('span');
 
   div.className = 'todo';
   div.setAttribute('data-id', todo.getId());
@@ -47,13 +48,17 @@ function renderTodo(todo) {
   dueDate.textContent = todo.getDueDate();
   dueDate.className = 'dueDate';
   dueDate.setAttribute('data-date', '');
-  btn.textContent = 'Completed';
-  btn.className = 'btn btn-complete';
-
+  btnComplete.textContent = 'Completed';
+  btnComplete.className = 'btn btn-complete';
+  btnComplete.style.background = todo.getIsComplete() ? 'green' : 'red';
+  btnRemove.textContent = 'Delete';
+  btnRemove.className = 'btn btn-remove';
   [title, description, dueDate].forEach((field) =>
     field.addEventListener('dblclick', makeFieldEditable)
   );
-  div.append(title, description, dueDate, btn);
+  btnComplete.addEventListener('click', setComplete);
+  btnRemove.addEventListener('click', removeTodo);
+  div.append(title, description, dueDate, btnComplete, btnRemove);
 
   return div;
 }
@@ -68,6 +73,25 @@ function createTodo() {
   app.getProject(selectedProject.textContent).createTodo(newTodo);
   renderTodo(newTodo);
   renderTodoList();
+}
+
+function removeTodo(e) {
+  const id = e.target.parentElement.dataset.id;
+  app.getProject(selectedProject.textContent).removeTodo(id);
+  renderTodoList();
+}
+
+function setComplete(e) {
+  const id = e.target.parentElement.dataset.id;
+  const todo = app.getProject(selectedProject.textContent).getTodo(id);
+
+  if (todo.getIsComplete()) return;
+
+  removeTodo(e);
+
+  renderTodoList();
+  todo.setComplete();
+  app.getProject('Completed').createTodo(todo);
 }
 
 export function renameTodo(id, title) {
