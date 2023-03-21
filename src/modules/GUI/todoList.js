@@ -3,7 +3,7 @@ import Todo from '../Todo';
 import makeFieldEditable from './makeFieldEditable';
 import { selectedProject } from './projectList';
 
-export default function renderTodoList() {
+/* export default function renderTodoList() {
   const todoList = document.querySelector('.todos');
   const newTodoBtn = document.querySelector('.btn-add');
   const todos = getAllTodos(selectedProject);
@@ -35,7 +35,7 @@ function renderTodo(todo) {
   const description = document.createElement('p');
   const dueDate = document.createElement('p');
   const btnComplete = document.createElement('button');
-  const btnRemove = document.createElement('span');
+  const btnRemove = document.createElement('button');
 
   div.className = 'todo';
   div.setAttribute('data-id', todo.getId());
@@ -111,3 +111,4 @@ export function changeDate(id, date) {
     .getTodo(id)
     .setDueDate(Date.parse(date));
 }
+ */

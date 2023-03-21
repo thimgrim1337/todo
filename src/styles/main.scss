@@ -149,8 +149,12 @@ aside {
                 padding: 0 .8rem;
             }
 
-            .btn-complete {
+            .btn {
                 align-self: stretch;
+            }
+
+            .btn-complete {
+                order: 2;
                 justify-self: flex-end;
                 background: red;
                 color: white;
@@ -162,12 +166,15 @@ aside {
                 }
 
             .btn-remove {
-                display: none;
+                transform: translateY(100px);
+                order: 1;
+                
             }
 
             &:hover .btn-remove {
-                display: block;
-                transition: .2s;
+                transform: translateY(0);
+
+                transition: .8s;
                 &:hover {
                     color: red;
                     font-weight: bolder;

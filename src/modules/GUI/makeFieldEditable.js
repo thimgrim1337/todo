@@ -1,4 +1,3 @@
-import { app } from '../../index';
 import { renameProject } from './projectList';
 import { changeDate, changeDescription, renameTodo } from './todoList';
 

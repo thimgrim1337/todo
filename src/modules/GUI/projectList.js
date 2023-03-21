@@ -1,4 +1,4 @@
-import { app } from '../../index';
+/* import { app } from '../../index';
 import renderTodoList from './todoList';
 import makeFieldEditable from './makeFieldEditable';
 
@@ -6,13 +6,10 @@ export let selectedProject;
 
 export default function renderProjectList() {
   const projectsList = document.querySelector('.projects');
-  const defaultProjects = app.getDefaultProjects();
   const newProjectLabel = document.querySelector('[for="newProject"]');
   const newProjectInput = document.querySelector('input#newProject');
 
-  defaultProjects.forEach((project) =>
-    projectsList.appendChild(createProjectListItem(project.name))
-  );
+  renderProjectListItem(projectsList, getDefaultProjectsList());
 
   setDefaultActive();
 
@@ -22,12 +19,10 @@ export default function renderProjectList() {
       newProjectLabel.classList.toggle('visible')
     );
 
-  document
-    .querySelector('.fa-check')
-    .addEventListener(
-      'click',
-      () => createProject(newProjectInput.value) && clearInput()
-    );
+  document.querySelector('.fa-check').addEventListener('click', () => {
+    createProject(newProjectInput.value);
+    clearInput();
+  });
 
   document.querySelector('.fa-xmark').addEventListener('click', clearInput);
 
@@ -35,6 +30,16 @@ export default function renderProjectList() {
     newProjectInput.value = '';
     newProjectLabel.classList.remove('visible');
   }
+}
+
+function getDefaultProjectsList() {
+  return app.getDefaultProjects();
+}
+
+function renderProjectListItem(projectList, projects) {
+  projects.forEach((project) =>
+    projectList.appendChild(createProjectListItem(project.name))
+  );
 }
 
 function createProjectListItem(name) {
@@ -57,19 +62,18 @@ function createProjectListRemoveIcon() {
 }
 
 function createProject(name) {
-  if (!app.checkName(name)) return false;
+  if (!app.isNameAvaiable(name)) return false;
 
-  const projectsList = document.querySelector('.projects');
   const project = createProjectListItem(name);
 
-  project.appendChild(createProjectListRemoveIcon(name));
+  project.appendChild(createProjectListRemoveIcon());
   project.addEventListener('dblclick', makeFieldEditable);
-  projectsList.appendChild(project);
 
   app.createProject(name);
+
   setActive(project);
 
-  return true;
+  document.querySelector('.projects').appendChild(project);
 }
 
 export function renameProject(element, newName) {
@@ -109,5 +113,7 @@ function setActive(project) {
 
 function displayActiveProjectName() {
   document.querySelector('#activeProjectName').textContent =
-    document.querySelector('.active').textContent;
+    selectedProject.textContent;
 }
+
+ */
