@@ -14,7 +14,6 @@ export default class TodoList {
 
   createProject = (projectName) => {
     this.projects.push(new Project(projectName));
-    console.log(this.getAllProjects());
   };
 
   removeProject = (projectName) => {

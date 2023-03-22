@@ -1,20 +1,20 @@
 export default class Project {
   constructor(name) {
-    this.tasks = [];
+    this.todos = [];
     this.name = name;
   }
 
   setName = (projectName) => (this.name = projectName);
 
-  getAllTasks = () => this.tasks;
+  getAllTodo = () => this.todos;
 
-  createTask = (task) => this.tasks.push(task);
+  createTodo = (todo) => this.todos.push(todo);
 
-  removeTask = (id) =>
-    this.tasks.splice(
-      this.tasks.findIndex((task) => task.id == id),
+  removeTodo = (id) =>
+    this.todos.splice(
+      this.todos.findIndex((todo) => todo.id == id),
       1
     );
 
-  getTask = (id) => this.tasks.find((task) => task.id === id);
+  getTodo = (id) => this.todos.find((todo) => todo.id === id);
 }

@@ -6,14 +6,16 @@ export default class Todo {
     title = 'No Title',
     description = 'No description',
     dueDate = Date.now(),
-    priority = 1
+    priority = 1,
+    id = uuidGenerator(),
+    isComplete = false
   ) {
-    this.id = uuidGenerator();
+    this.id = id;
     this.title = this.setTitle(title);
     this.description = this.setDescription(description);
     this.dueDate = dateFormater(dueDate);
     this.priority = priority;
-    this.isComplete = false;
+    this.isComplete = isComplete;
   }
 
   setTitle = (title) =>
