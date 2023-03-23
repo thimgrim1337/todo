@@ -1,9 +1,8 @@
 import Project from './Project';
 
 export default class TodoList {
-  _defaultProjects = [new Project('Main'), new Project('Completed')];
   constructor() {
-    this.projects = [...this._defaultProjects];
+    this.projects = [new Project('Main'), new Project('Completed')];
   }
 
   isNameAvaiable = (projectName) => {
@@ -12,9 +11,11 @@ export default class TodoList {
     return true;
   };
 
-  createProject = (projectName) => {
+  addProject = (projectName) => {
     this.projects.push(new Project(projectName));
   };
+  getProject = (projectName) =>
+    this.projects.find((project) => project.name == projectName);
 
   removeProject = (projectName) => {
     this.projects.splice(
@@ -23,7 +24,6 @@ export default class TodoList {
     );
   };
 
-  getProject = (projectName) =>
-    this.projects.find((project) => project.name == projectName);
-  getAllProjects = () => this.projects;
+  setProjects = (projects) => (this.projects = projects);
+  getProjects = () => this.projects;
 }

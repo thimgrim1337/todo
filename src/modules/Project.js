@@ -5,16 +5,17 @@ export default class Project {
   }
 
   setName = (projectName) => (this.name = projectName);
+  getName = () => this.name;
 
-  getAllTodo = () => this.todos;
+  getTodos = () => this.todos;
+  setTodos = (todos) => (this.todos = todos);
 
-  createTodo = (todo) => this.todos.push(todo);
+  setTodo = (todo) => this.todos.push(todo);
+  getTodo = (id) => this.todos.find((todo) => todo.id === id);
 
   removeTodo = (id) =>
     this.todos.splice(
       this.todos.findIndex((todo) => todo.id == id),
       1
     );
-
-  getTodo = (id) => this.todos.find((todo) => todo.id === id);
 }

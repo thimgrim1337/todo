@@ -1,44 +1,102 @@
-import { parseISO } from 'date-fns';
-import { todoList } from '..';
+import Project from './Project';
 import Todo from './Todo';
+import TodoList from './TodoList';
 
 export default class Storage {
-  static setProjects() {
-    localStorage.setItem('projects', JSON.stringify(todoList.getAllProjects()));
+  static setTodoList(data) {
+    localStorage.setItem('todoList', JSON.stringify(data));
   }
 
-  static getProjects() {
-    return JSON.parse(localStorage.getItem('projects'));
-  }
+  static getTodoList() {
+    const todoList = Object.assign(
+      new TodoList(),
+      JSON.parse(localStorage.getItem('todoList'))
+    );
 
-  static getTodos(projectName) {
-    const rawTodos = JSON.parse(localStorage.getItem('projects')).find(
-      (project) => project.name === projectName
-    ).todos;
+    todoList.setProjects(
+      todoList
+        .getProjects()
+        .map((project) => Object.assign(new Project(), project))
+    );
 
-    const todos = [];
-
-    rawTodos.forEach((todo) => {
-      todos.push(
-        Object.create(
-          new Todo(
-            todo.title,
-            todo.description,
-            parseISO(todo.dueDate),
-            todo.priority,
-            todo.id,
-            todo.isComplete
-          )
+    todoList
+      .getProjects()
+      .forEach((project) =>
+        project.setTodos(
+          project.getTodos().map((todo) => Object.assign(new Todo(), todo))
         )
       );
-    });
 
-    return todos;
+    return todoList;
   }
 
-  static checkStorage() {
-    if (localStorage.getItem('projects')) return true;
+  static createProject(project) {
+    const todoList = this.getTodoList();
+    if (!todoList.isNameAvaiable(project)) return;
+    todoList.addProject(project);
+    this.setTodoList(todoList);
+  }
 
-    return false;
+  static removeProject(project) {
+    const todoList = this.getTodoList();
+    todoList.removeProject(project);
+    this.setTodoList(todoList);
+  }
+
+  static renameProject(oldName, newName) {
+    const todoList = this.getTodoList();
+    todoList.getProject(oldName).setName(newName);
+    this.setTodoList(todoList);
+  }
+
+  static createTodo(project) {
+    const todoList = this.getTodoList();
+    todoList.getProject(project).setTodo(new Todo());
+    this.setTodoList(todoList);
+  }
+
+  static removeTodo(project, id) {
+    const todoList = this.getTodoList();
+    todoList.getProject(project).removeTodo(id);
+    this.setTodoList(todoList);
+  }
+
+  static renameTodo(project, id, title) {
+    const todoList = this.getTodoList();
+    todoList.getProject(project).getTodo(id).setTitle(title);
+    this.setTodoList(todoList);
+  }
+
+  static changeDescription(project, id, description) {
+    const todoList = this.getTodoList();
+
+    todoList.getProject(project).getTodo(id).setDescription(description);
+    this.setTodoList(todoList);
+  }
+
+  static changeDate(project, id, date) {
+    const todoList = this.getTodoList();
+    todoList.getProject(project).getTodo(id).setDueDate(Date.parse(date));
+    this.setTodoList(todoList);
+  }
+
+  static setComplete(project, id) {
+    const todoList = this.getTodoList();
+    const todo = todoList.getProject(project).getTodo(id);
+    if (todo.getIsComplete()) return;
+    todo.setComplete();
+
+    todoList.getProject('Completed').setTodo(todo);
+    todoList.getProject(project).removeTodo(id);
+
+    this.setTodoList(todoList);
+  }
+
+  static checkStorage(todoList) {
+    if (localStorage.getItem('todoList'))
+      return (todoList = this.getTodoList());
+    else this.setTodoList(todoList);
+
+    return todoList;
   }
 }

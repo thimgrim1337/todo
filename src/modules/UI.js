@@ -1,30 +1,42 @@
-import { todoList } from '../..';
-import Storage from '../Storage';
-import Todo from '../Todo';
+import Storage from './Storage';
+import TodoList from './TodoList';
 
 export default class UI {
   // Project List
+  static todoList = new TodoList();
   static projectList = document.querySelector('.projects');
   static selectedProject;
 
+  static initTodoApp() {
+    this.initProjectList();
+    this.initTodoList();
+  }
+
   static initProjectList() {
-    // if (!Storage.checkStorage()) Storage.setProjects();
     this.renderProjectsList();
     this.initNewProjectEventListeners();
     this.setDefaultActiveProject();
   }
 
   static renderProjectsList() {
-    const projects = Storage.getProjects();
+    this.todoList = Storage.checkStorage(this.todoList);
+
+    this.projectList.innerHTML = '';
+    const projects = this.todoList.getProjects();
 
     projects.forEach((project) => {
-      if (project.name === 'Main' || project.name === 'Completed')
-        this.projectList.appendChild(this.createProjectListItem(project.name));
-      else this.projectList.appendChild(this.createProject(project.name));
+      if (project.getName() === 'Main' || project.getName() === 'Completed') {
+        this.projectList.appendChild(
+          this.createDefaultProjectListItem(project.getName())
+        );
+      } else
+        this.projectList.appendChild(
+          this.createProjectListItem(project.getName())
+        );
     });
   }
 
-  static createProjectListItem(projectName) {
+  static createDefaultProjectListItem(projectName) {
     const li = document.createElement('li');
 
     li.textContent = projectName;
@@ -38,39 +50,42 @@ export default class UI {
   static createProjectListRemoveIcon() {
     const icon = document.createElement('i');
     icon.classList.add('fa-regular', 'fa-trash-can');
-    icon.addEventListener('click', this.removeProject, { once: true });
+    icon.addEventListener('click', (e) => this.removeProject(e));
 
     return icon;
   }
 
+  static createProjectListItem(projectName) {
+    const li = this.createDefaultProjectListItem(projectName);
+    const icon = this.createProjectListRemoveIcon();
+
+    li.appendChild(icon);
+    this.setActive(li);
+    this.initMakeFieldEditable(li);
+
+    return li;
+  }
+
   static createProject(projectName) {
-    if (!todoList.isNameAvaiable(projectName)) return;
+    if (projectName === '') return;
 
-    todoList.createProject(projectName);
-    Storage.setProjects();
-
-    const project = this.createProjectListItem(projectName);
-    project.appendChild(this.createProjectListRemoveIcon());
-    this.setActive(project);
-    this.projectList.appendChild(project);
-    this.initMakeFieldEditable(project);
-
-    return project;
+    Storage.createProject(projectName);
+    this.renderProjectsList();
   }
 
   static removeProject(e) {
     e.stopPropagation();
     let projectName = e.target.closest('li').textContent;
-    todoList.removeProject(projectName);
+    Storage.removeProject(projectName);
     e.target.parentElement.remove();
-    Storage.setProjects();
-    this.setDefaultActiveProject;
+    this.setDefaultActiveProject();
   }
 
   static renameProject(element, newName) {
     const oldName = element.getAttribute('data-name');
 
-    todoList.getProject(oldName).setName(newName);
+    Storage.renameProject(oldName, newName);
+
     document
       .querySelector(`[data-name="${oldName}"]`)
       .setAttribute('data-name', newName);
@@ -79,8 +94,6 @@ export default class UI {
       .appendChild(this.createProjectListRemoveIcon(newName));
 
     this.setActive(document.querySelector(`[data-name="${newName}"]`));
-
-    Storage.setProjects();
   }
 
   static setActive(project) {
@@ -142,23 +155,18 @@ export default class UI {
   }
 
   static renderTodoList() {
-    const todolist = document.querySelector('.todos');
-    const todos = Storage.getTodos(this.getActiveProject());
+    this.todoList = Storage.checkStorage(this.todoList);
+    const todosDiv = document.querySelector('.todos');
+    const todos = this.todoList.getProject(this.getActiveProject()).getTodos();
 
-    this.clearTodoList(todolist);
+    this.clearTodoList(todosDiv);
 
     if (todos) {
       todos.forEach((todo) =>
-        todolist.insertBefore(this.renderTodo(todo), todolist.firstChild)
+        todosDiv.insertBefore(this.renderTodo(todo), todosDiv.firstChild)
       );
     }
   }
-
-  // static getTodos(selectedProject) {
-  //   return selectedProject && todoList.getProject(selectedProject)
-  //     ? todoList.getProject(selectedProject).getAllTodo()
-  //     : false;
-  // }
 
   static renderTodo(todo) {
     const div = document.createElement('div');
@@ -201,48 +209,32 @@ export default class UI {
   }
 
   static createTodo() {
-    todoList.getProject(this.getActiveProject()).createTodo(new Todo());
-    Storage.setProjects();
+    Storage.createTodo(this.getActiveProject());
     this.renderTodoList();
   }
 
   static removeTodo(e) {
     const id = e.target.parentElement.dataset.id;
-    todoList.getProject(this.getActiveProject()).removeTodo(id);
-    Storage.setProjects();
+    Storage.removeTodo(this.getActiveProject(), id);
     this.renderTodoList();
   }
 
   static setComplete(e) {
     const id = e.target.parentElement.dataset.id;
-
-    const todo = todoList.getProject(this.getActiveProject()).getTodo(id);
-
-    if (todo.getIsComplete()) return;
-
-    todo.setComplete();
-    this.removeTodo(e);
-    todoList.getProject('Completed').createTodo(todo);
+    Storage.setComplete(this.getActiveProject(), id);
     this.renderTodoList();
-    Storage.setProjects();
   }
 
   static renameTodo(id, title) {
-    todoList.getProject(this.getActiveProject()).getTodo(id).setTitle(title);
+    Storage.renameTodo(this.getActiveProject(), id, title);
   }
 
   static changeDescription(id, description) {
-    todoList
-      .getProject(this.getActiveProject())
-      .getTodo(id)
-      .setDescription(description);
+    Storage.changeDescription(this.getActiveProject(), id, description);
   }
 
   static changeDate(id, date) {
-    todoList
-      .getProject(this.getActiveProject())
-      .getTodo(id)
-      .setDueDate(Date.parse(date));
+    Storage.changeDate(this.getActiveProject(), id, date);
   }
 
   static makeFieldEditable(e) {
