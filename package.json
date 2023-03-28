@@ -1,5 +1,5 @@
 {
-  "name": "restaurant-landingpage",
+  "name": "Todo App",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -35,8 +35,10 @@
     "-": "^0.0.1",
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
+    "@fortawesome/fontawesome-free": "^6.4.0",
     "babel-loader": "^9.1.2",
     "D": "^1.0.0",
-    "date-fns": "^2.29.3"
+    "date-fns": "^2.29.3",
+    "normalize.css": "^8.0.1"
   }
 }
