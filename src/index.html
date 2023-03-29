@@ -13,17 +13,17 @@
         <ul class="projects__list flex-grow">
           <li class="projects__item projects__item--active">
             Project 1<i
-              class="icon projects__icon icon--is-hidden icon--remove fa-solid fa-trash"
+              class="icon projects__icon icon--remove is-hidden fa-solid fa-trash"
             ></i>
           </li>
           <li class="projects__item">
             Project 2<i
-              class="icon projects__icon icon--is-hidden icon--remove fa-solid fa-trash"
+              class="icon projects__icon icon--remove is-hidden fa-solid fa-trash"
             ></i>
           </li>
           <li class="projects__item">
             Project 3<i
-              class="icon projects__icon icon--is-hidden icon--remove fa-solid fa-trash"
+              class="icon projects__icon i icon--remove is-hidden fa-solid fa-trash"
             ></i>
           </li>
         </ul>
@@ -32,7 +32,7 @@
         </button>
       </aside>
       <main class="todos content__todos">
-        <h1 class="todos__title">Your Tasks in <span>Project</span></h1>
+        <h2 class="todos__title">Your Tasks in <span>Project</span></h2>
         <ul class="todos__list flex-grow">
           <li class="todos__item">
             <input
@@ -45,18 +45,38 @@
             ><span class="todos__date">22/12/2023</span
             ><i class="todos__icon icon icon--modify fa-solid fa-pencil"></i
             ><i class="todos__icon icon icon--remove fa-solid fa-trash"></i>
+            <div class="details todos__details">
+              <div class="details__content">
+                <h3 class="details__title">Details</h3>
+                <p class="details__task-name">Name: <span>Task 1</span></p>
+                <p class="details__task-description">
+                  Description: <span>Lorem ipsum</span>
+                </p>
+                <p class="details__task-creation-date">
+                  Creation date: <span>28/03/2023</span>
+                </p>
+                <p class="details__task-due-date">
+                  Due date: <span>29/03/2023</span>
+                </p>
+                <p class="details__task-priority">Priority: <span>1</span></p>
+                <p class="details__task-is-completed">
+                  Completed: <span>No</span>
+                </p>
+              </div>
+            </div>
           </li>
-          <li class="todos__item">
+          <li class="todos__item todos__item--completed">
             <input
               class="todos__input-checkbox"
               type="checkbox"
               name="task"
               id="task"
             /><label class="todos__name flex-grow" for="task">Task 2</label
-            ><button class="btn todos__btn">Details</button
+            ><button class="btn btn--completed todos__btn">Details</button
             ><span class="todos__date">22/12/2023</span
-            ><i class="todos__icon icon icon--modify fa-solid fa-pencil"></i
-            ><i class="todos__icon icon icon--remove fa-solid fa-trash"></i>
+            ><i class="todos__icon icon icon--completed fa-solid fa-pencil"></i
+            ><i class="todos__icon icon icon--completed fa-solid fa-trash"></i>
+            <div class="line"></div>
           </li>
           <li class="todos__item">
             <input
@@ -75,25 +95,9 @@
           class="todos__input-item"
           type="text"
           name="new-todo"
-          value="Enter your task here..."
+          placeholder="Enter your task here..."
         />
       </main>
-    </div>
-    <div class="modal">
-      <div class="modal__content">
-        <h3 class="modal__title">Here you can see your task's details</h3>
-        <p class="modal__task-name">Name: <span>Task 1</span></p>
-        <p class="modal__task-description">
-          Description: <span>Lorem ipsum</span>
-        </p>
-        <p class="modal__task-creation-date">
-          Creation date: <span>28/03/2023</span>
-        </p>
-        <p class="modal__task-due-date">Due date: <span>29/03/2023</span></p>
-        <p class="modal__task-priority">Priority: <span>1</span></p>
-        <p class="modal__task-is-completed">Completed: <span>No</span></p>
-        <button class="modal__btn btn">Close</button>
-      </div>
     </div>
   </body>
 </html>
