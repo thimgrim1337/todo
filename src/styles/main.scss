@@ -144,13 +144,14 @@ body {
 .details {
     border-top: 2px solid #ddd;
     padding: 1rem 0;
+    overflow: hidden;
 
     &__title {
         margin-bottom: .8rem;
     }
 
     &--slidedown {
-        animation: slidedown 2s ease-in-out 0s 1 forwards;
+        animation: slidedown 1s ease-in-out 0s 1 forwards;
     }
 }
 

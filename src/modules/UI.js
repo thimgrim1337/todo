@@ -228,6 +228,8 @@ export default class UI {
       'fa-trash'
     );
 
+    this.initShowDetailsEventListener(btnDetails);
+
     li.append(btnComplete, title, btnDetails, date, btnEdit, btnDelete);
 
     return li;
@@ -267,8 +269,76 @@ export default class UI {
     Storage.changeDate(this.getActiveProject(), id, date);
   }
 
-  static renderDetails() {
-    // const div = document.c
+  static renderDetails(todo) {
+    const details = document.createElement('div');
+    const content = document.createElement('div');
+    const title = document.createElement('h3');
+    const name = document.createElement('p');
+    const nameSpan = document.createElement('span');
+    const description = document.createElement('p');
+    const descriptionSpan = document.createElement('span');
+    const creationDate = document.createElement('p');
+    const creationDateSpan = document.createElement('span');
+    const dueDate = document.createElement('p');
+    const dueDateSpan = document.createElement('span');
+    const priority = document.createElement('p');
+    const prioritySpan = document.createElement('span');
+    const isCompleted = document.createElement('p');
+    const isCompletedSpan = document.createElement('span');
+
+    details.classList.add('details', 'todos__details');
+    content.classList.add('details__content');
+    title.classList.add('details__title');
+    title.textContent = 'Details';
+    name.classList.add('details__task-name');
+    nameSpan.textContent = `Name: ${todo.getTitle()}`;
+    description.classList.add('details__task-description');
+    descriptionSpan.textContent = `Description: ${todo.getDescription()}`;
+    creationDate.classList.add('details__task-creation-date');
+    creationDateSpan.textContent = `Creation date: ${todo.getCreationDate()}`;
+    dueDate.classList.add('details__task-due-date');
+    dueDateSpan.textContent = `Due date: ${todo.getDueDate()}`;
+    priority.classList.add('details__task-priority');
+    prioritySpan.textContent = `Priority: ${todo.getPriority()}`;
+    isCompleted.classList.add('details__task-is-completed');
+    isCompletedSpan.textContent = `Is complete: ${todo.getIsComplete()}`;
+
+    name.appendChild(nameSpan);
+    description.appendChild(descriptionSpan);
+    creationDate.appendChild(creationDateSpan);
+    dueDate.appendChild(dueDateSpan);
+    priority.appendChild(prioritySpan);
+    isCompleted.appendChild(isCompletedSpan);
+    content.append(
+      title,
+      name,
+      description,
+      creationDate,
+      dueDate,
+      priority,
+      isCompleted
+    );
+    details.appendChild(content);
+    details.classList.add('details--slidedown');
+    return details;
+  }
+
+  static initShowDetailsEventListener(btn) {
+    btn.addEventListener('click', () => {
+      const details = document.querySelector('.todos__details');
+      if (details) {
+        btn.parentElement.removeChild(details);
+        return;
+      }
+
+      btn.parentElement.appendChild(
+        this.renderDetails(
+          this.todoList
+            .getProject(this.getActiveProject())
+            .getTodo(btn.parentElement.dataset.id)
+        )
+      );
+    });
   }
 
   static makeFieldEditable(e) {

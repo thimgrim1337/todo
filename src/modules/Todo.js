@@ -5,7 +5,8 @@ export default class Todo {
   constructor(title) {
     this.id = uuidGenerator();
     this.title = title;
-    this.description = this.setDescription();
+    this.description = this.setDescription('');
+    this.creationDate = dateFormater(Date.now());
     this.dueDate = dateFormater(Date.now());
     this.priority = 1;
     this.isComplete = false;
@@ -27,6 +28,7 @@ export default class Todo {
   getTitle = () => this.title;
   getDescription = () => this.description;
   getDueDate = () => this.dueDate;
+  getCreationDate = () => this.creationDate;
   getPriority = () => this.priority;
   getIsComplete = () => this.isComplete;
 }
