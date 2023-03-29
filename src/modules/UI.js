@@ -9,7 +9,7 @@ export default class UI {
 
   static initTodoApp() {
     this.initProjectList();
-    // this.initTodoList();
+    this.initTodoList();
   }
 
   static initProjectList() {
@@ -69,7 +69,7 @@ export default class UI {
     li.appendChild(icon);
     this.setActive(li);
     this.initProjectHoverEventlistener(li);
-    // this.initMakeFieldEditable(li);
+    this.initMakeFieldEditable(li);
 
     return li;
   }
@@ -109,7 +109,7 @@ export default class UI {
     this.selectedProject = project;
     project.classList.add('projects__item--active');
     this.displayActiveProjectName();
-    // this.renderTodoList();
+    this.renderTodoList();
   }
 
   static getActiveProject() {
@@ -159,78 +159,87 @@ export default class UI {
   }
 
   static initMakeFieldEditable(node) {
-    this.makeFieldEditable(node);
-  }
-
-  static clearInput() {
-    this.newProjectInput.value = '';
-    this.newProjectLabel.classList.remove('visible');
+    node.addEventListener('dblclick', (e) => this.makeFieldEditable(e));
   }
 
   // Todo List
 
   static initTodoList() {
-    const newTodoBtn = document.querySelector('.btn-add');
+    const newTodoInput = document.querySelector('.todos__input-item');
     this.renderTodoList();
-    newTodoBtn.addEventListener('click', () => this.createTodo());
+    newTodoInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        this.createTodo(e.target.value);
+        e.target.value = '';
+      }
+    });
   }
 
   static renderTodoList() {
     this.todoList = Storage.checkStorage(this.todoList);
-    const todosDiv = document.querySelector('.todos');
+    const todoLi = document.querySelector('.todos__list');
     const todos = this.todoList.getProject(this.getActiveProject()).getTodos();
 
-    this.clearTodoList(todosDiv);
+    this.clearTodoList(todoLi);
 
     if (todos) {
       todos.forEach((todo) =>
-        todosDiv.insertBefore(this.renderTodo(todo), todosDiv.firstChild)
+        todoLi.insertBefore(this.renderTodo(todo), todoLi.firstChild)
       );
     }
   }
 
   static renderTodo(todo) {
-    const div = document.createElement('div');
-    const title = document.createElement('h2');
-    const description = document.createElement('p');
-    const dueDate = document.createElement('p');
-    const btnComplete = document.createElement('button');
-    const btnRemove = document.createElement('button');
+    const li = document.createElement('li');
+    const btnComplete = document.createElement('input');
+    const title = document.createElement('label');
+    const btnDetails = document.createElement('button');
+    const date = document.createElement('span');
+    const btnEdit = document.createElement('i');
+    const btnDelete = document.createElement('i');
 
-    div.className = 'todo';
-    div.setAttribute('data-id', todo.getId());
+    li.className = 'todos__item';
+    li.setAttribute('data-id', todo.getId());
+    btnComplete.className = 'todos__input-checkbox';
+    btnComplete.type = 'checkbox';
+    btnComplete.name = 'task';
+    btnComplete.id = 'task';
+    title.classList.add('todos__name', 'flex-grow');
+    title.for = 'task';
     title.textContent = todo.getTitle();
-    title.className = 'title';
     title.setAttribute('data-title', '');
-    description.textContent = todo.getDescription();
-    description.className = 'description';
-    description.setAttribute('data-description', '');
-    dueDate.textContent = todo.getDueDate();
-    dueDate.className = 'dueDate';
-    dueDate.setAttribute('data-date', '');
-    btnComplete.textContent = 'Completed';
-    btnComplete.className = 'btn btn-complete';
-    btnComplete.style.background = todo.getIsComplete() ? 'green' : 'red';
-    btnRemove.textContent = 'Delete';
-    btnRemove.className = 'btn btn-remove';
-    [title, description, dueDate].forEach((field) =>
-      field.addEventListener('dblclick', this.makeFieldEditable)
+    btnDetails.classList.add('btn', 'todos__btn');
+    btnDetails.textContent = 'Details';
+    date.className = 'todos__date';
+    date.textContent = todo.getDueDate();
+    date.setAttribute('data-date', '');
+    btnEdit.classList.add(
+      'todos__icon',
+      'icon',
+      'icon--modify',
+      'fa-solid',
+      'fa-pencil'
+    );
+    btnDelete.classList.add(
+      'todos__icon',
+      'icon',
+      'icon--remove',
+      'fa-solid',
+      'fa-trash'
     );
 
-    btnComplete.addEventListener('click', (e) => this.setComplete(e));
-    btnRemove.addEventListener('click', (e) => this.removeTodo(e));
-    div.append(title, description, dueDate, btnComplete, btnRemove);
+    li.append(btnComplete, title, btnDetails, date, btnEdit, btnDelete);
 
-    return div;
+    return li;
   }
 
   static clearTodoList(todoList) {
-    const todos = document.querySelectorAll('.todo');
+    const todos = document.querySelectorAll('.todos__item');
     if (todos) todos.forEach((todo) => todoList.removeChild(todo));
   }
 
-  static createTodo() {
-    Storage.createTodo(this.getActiveProject());
+  static createTodo(todoTitle) {
+    Storage.createTodo(this.getActiveProject(), todoTitle);
     this.renderTodoList();
   }
 
@@ -256,6 +265,10 @@ export default class UI {
 
   static changeDate(id, date) {
     Storage.changeDate(this.getActiveProject(), id, date);
+  }
+
+  static renderDetails() {
+    // const div = document.c
   }
 
   static makeFieldEditable(e) {
@@ -294,7 +307,9 @@ export default class UI {
       return datetime;
     }
 
-    return document.createElement('input');
+    const input = document.createElement('input');
+    input.classList.add('projects__input');
+    return input;
   }
 
   static changeValue(element, value) {

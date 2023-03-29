@@ -77,6 +77,11 @@ body {
         background: transparent;
         border: none;
     }
+
+    &__input {
+        text-align: center;
+        font-size: 1.3rem;
+    }
 }
 
 .todos {

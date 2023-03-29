@@ -49,9 +49,9 @@ export default class Storage {
     this.setTodoList(todoList);
   }
 
-  static createTodo(project) {
+  static createTodo(project, title) {
     const todoList = this.getTodoList();
-    todoList.getProject(project).setTodo(new Todo());
+    todoList.getProject(project).setTodo(new Todo(title));
     this.setTodoList(todoList);
   }
 

@@ -2,24 +2,17 @@ import { v4 as uuid } from 'uuid';
 import format from 'date-fns/format';
 
 export default class Todo {
-  constructor(
-    title = 'No Title',
-    description = 'No description',
-    dueDate = Date.now(),
-    priority = 1,
-    id = uuidGenerator(),
-    isComplete = false
-  ) {
-    this.id = id;
-    this.title = this.setTitle(title);
-    this.description = this.setDescription(description);
-    this.dueDate = dateFormater(dueDate);
-    this.priority = priority;
-    this.isComplete = isComplete;
+  constructor(title) {
+    this.id = uuidGenerator();
+    this.title = title;
+    this.description = this.setDescription();
+    this.dueDate = dateFormater(Date.now());
+    this.priority = 1;
+    this.isComplete = false;
   }
 
   setTitle = (title) =>
-    title != '' ? (this.title = title) : (this.title = 'No title');
+    title !== '' ? (this.title = title) : (this.title = 'No title');
 
   setDescription = (description) =>
     description != ''
