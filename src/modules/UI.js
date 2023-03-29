@@ -4,17 +4,17 @@ import TodoList from './TodoList';
 export default class UI {
   // Project List
   static todoList = new TodoList();
-  static projectList = document.querySelector('.projects');
+  static projectList = document.querySelector('.projects__list');
   static selectedProject;
 
   static initTodoApp() {
     this.initProjectList();
-    this.initTodoList();
+    // this.initTodoList();
   }
 
   static initProjectList() {
     this.renderProjectsList();
-    this.initNewProjectEventListeners();
+    this.initProjectEventlistener();
     this.setDefaultActiveProject();
   }
 
@@ -40,7 +40,7 @@ export default class UI {
     const li = document.createElement('li');
 
     li.textContent = projectName;
-    li.classList.add('project');
+    li.classList.add('projects__item');
     li.setAttribute('data-name', projectName);
     li.addEventListener('click', () => this.setActive(li));
 
@@ -49,7 +49,14 @@ export default class UI {
 
   static createProjectListRemoveIcon() {
     const icon = document.createElement('i');
-    icon.classList.add('fa-regular', 'fa-trash-can');
+    icon.classList.add(
+      'icon',
+      'projects__icon',
+      'icon--remove',
+      'is-hidden',
+      'fa-solid',
+      'fa-trash'
+    );
     icon.addEventListener('click', (e) => this.removeProject(e));
 
     return icon;
@@ -61,7 +68,8 @@ export default class UI {
 
     li.appendChild(icon);
     this.setActive(li);
-    this.initMakeFieldEditable(li);
+    this.initProjectHoverEventlistener(li);
+    // this.initMakeFieldEditable(li);
 
     return li;
   }
@@ -97,9 +105,10 @@ export default class UI {
   }
 
   static setActive(project) {
-    if (this.selectedProject) this.selectedProject.classList.remove('active');
+    if (this.selectedProject)
+      this.selectedProject.classList.remove('projects__item--active');
     this.selectedProject = project;
-    project.classList.add('active');
+    project.classList.add('projects__item--active');
     this.displayActiveProjectName();
     this.renderTodoList();
   }
@@ -109,36 +118,36 @@ export default class UI {
   }
 
   static displayActiveProjectName() {
-    document.querySelector('#activeProjectName').textContent =
+    document.querySelector('.todos__title span').textContent =
       this.getActiveProject();
   }
 
   static setDefaultActiveProject() {
-    this.setActive(document.querySelector('.project'));
+    this.setActive(document.querySelector('.projects__item'));
   }
 
   // PROJECT LIST EVENTLISTENERS
-  static newProjectBtn = document.querySelector('.btn-project');
-  static newProjectLabel = document.querySelector('[for="newProject"]');
-  static newProjectInput = document.querySelector('input#newProject');
-  static newProjectConfirmBtn = document.querySelector('.fa-check');
-  static newProjectAbortBtn = document.querySelector('.fa-xmark');
+  static newProjectBtn = document.querySelector('.projects__btn');
 
-  static initNewProjectEventListeners() {
+  static initProjectEventlistener() {
+    const projectNumber = this.todoList.getProjects().length + 1;
     this.newProjectBtn.addEventListener('click', () =>
-      this.newProjectLabel.classList.toggle('visible')
+      this.createProject(`Project ${projectNumber}`)
     );
-
-    this.newProjectConfirmBtn.addEventListener('click', () => {
-      this.createProject(this.newProjectInput.value);
-      this.clearInput();
-    });
-
-    this.newProjectAbortBtn.addEventListener('click', () => this.clearInput());
   }
 
-  static initMakeFieldEditable(project) {
-    project.addEventListener('dblclick', this.makeFieldEditable);
+  static initProjectHoverEventlistener(node) {
+    node.addEventListener('mouseover', () => {
+      node.firstElementChild.classList.remove('is-hidden');
+    });
+
+    node.addEventListener('mouseout', () => {
+      node.firstElementChild.classList.add('is-hidden');
+    });
+  }
+
+  static initMakeFieldEditable(node) {
+    this.makeFieldEditable(node);
   }
 
   static clearInput() {

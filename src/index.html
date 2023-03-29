@@ -99,5 +99,56 @@
         />
       </main>
     </div>
+
+    <div class="modal is-hidden">
+      <div class="modal__content">
+        <h3 class="modal__title">Edit your task</h3>
+        <label class="modal__label" for="task-name"
+          >Name:
+          <input
+            type="text"
+            class="modal__input"
+            name="task-name"
+            id="task-name"
+        /></label>
+        <label class="modal__label" for="task-description"
+          >Description:
+          <input
+            type="text"
+            class="modal__input"
+            name="task-description"
+            id="task-description"
+        /></label>
+        <label class="modal__label" for="task-duedate"
+          >Due date:
+          <input
+            type="date"
+            class="modal__input"
+            name="task-duedate"
+            id="task-duedate"
+          />
+        </label>
+        <label class="modal__label" for="task-priority"
+          >Priority:
+          <input
+            type="number"
+            min="1"
+            max="3"
+            class="modal__input"
+            name="task-priority"
+            id="task-priority"
+        /></label>
+        <label class="modal__label modal__label--center" for="task-is-completed"
+          >Is completed ?
+          <input
+            type="checkbox"
+            class="modal__input"
+            name="task-is-completed"
+            id="task-is-completed"
+        /></label>
+        <button class="modal__btn btn btn--save">Save</button>
+        <button class="modal__btn btn btn--close">Close</button>
+      </div>
+    </div>
   </body>
 </html>
