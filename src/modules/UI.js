@@ -42,7 +42,7 @@ export default class UI {
     li.textContent = projectName;
     li.classList.add('projects__item');
     li.setAttribute('data-name', projectName);
-    li.addEventListener('click', () => this.setActive(li));
+    this.initProjectActiveEventlistener(li);
 
     return li;
   }
@@ -57,7 +57,7 @@ export default class UI {
       'fa-solid',
       'fa-trash'
     );
-    icon.addEventListener('click', (e) => this.removeProject(e));
+    this.initProjectRemoveEventlistener(icon);
 
     return icon;
   }
@@ -81,11 +81,10 @@ export default class UI {
     this.renderProjectsList();
   }
 
-  static removeProject(e) {
-    e.stopPropagation();
-    let projectName = e.target.closest('li').textContent;
+  static removeProject(projectName) {
     Storage.removeProject(projectName);
-    e.target.parentElement.remove();
+
+    this.renderProjectsList();
     this.setDefaultActiveProject();
   }
 
@@ -110,7 +109,7 @@ export default class UI {
     this.selectedProject = project;
     project.classList.add('projects__item--active');
     this.displayActiveProjectName();
-    this.renderTodoList();
+    // this.renderTodoList();
   }
 
   static getActiveProject() {
@@ -123,17 +122,30 @@ export default class UI {
   }
 
   static setDefaultActiveProject() {
-    this.setActive(document.querySelector('.projects__item'));
+    this.setActive(document.querySelector("[data-name='Main']"));
   }
 
   // PROJECT LIST EVENTLISTENERS
   static newProjectBtn = document.querySelector('.projects__btn');
 
   static initProjectEventlistener() {
-    const projectNumber = this.todoList.getProjects().length + 1;
-    this.newProjectBtn.addEventListener('click', () =>
-      this.createProject(`Project ${projectNumber}`)
-    );
+    this.newProjectBtn.addEventListener('click', () => {
+      const projectNumber = this.todoList.getProjects().length + 1;
+      this.createProject(`Project ${projectNumber}`);
+    });
+  }
+
+  static initProjectActiveEventlistener(node) {
+    node.addEventListener('click', () => {
+      this.setActive(node);
+    });
+  }
+
+  static initProjectRemoveEventlistener(node) {
+    node.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.removeProject(node.parentElement.dataset.name);
+    });
   }
 
   static initProjectHoverEventlistener(node) {
