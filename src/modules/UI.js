@@ -318,7 +318,6 @@ export default class UI {
       isCompleted
     );
     details.appendChild(content);
-    details.classList.add('details--slidedown');
     return details;
   }
 
@@ -328,18 +327,19 @@ export default class UI {
       if (details) {
         details.classList.remove('details--slidedown');
         details.classList.add('details--slideup');
-
-        btn.parentElement.removeChild(details);
+        details.addEventListener('animationend', () => {
+          details.remove();
+        });
         return;
       }
-
-      btn.parentElement.appendChild(
-        this.renderDetails(
-          this.todoList
-            .getProject(this.getActiveProject())
-            .getTodo(btn.parentElement.dataset.id)
-        )
+      const detailsElement = this.renderDetails(
+        this.todoList
+          .getProject(this.getActiveProject())
+          .getTodo(btn.parentElement.dataset.id)
       );
+
+      detailsElement.classList.add('details--slidedown');
+      btn.parentElement.appendChild(detailsElement);
     });
   }
 

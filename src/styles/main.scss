@@ -148,10 +148,15 @@ body {
 
     &__title {
         margin-bottom: .8rem;
+        padding: 0;
     }
 
     &--slidedown {
         animation: slidedown 1s ease-in-out 0s 1 forwards;
+    }
+
+    &--slideup {
+        animation: slideup 1s ease-in-out 0s 1;
     }
 
 }
@@ -273,6 +278,15 @@ body {
     }
     to {
         height: 170px;
+    }
+}
+
+@keyframes slideup {
+    from {
+        height: 170px;
+    }
+    to {
+        height: 0;
     }
 }
 
