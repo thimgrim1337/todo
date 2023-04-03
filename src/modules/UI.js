@@ -227,8 +227,15 @@ export default class UI {
       'fa-trash'
     );
 
+    if (todo.getPriority() === 1)
+      li.classList.add('todos__item--priority-high');
+    if (todo.getPriority() === 2)
+      li.classList.add('todos__item--priority-medium');
+    if (todo.getPriority() === 3) li.classList.add('todos__item--priority-low');
+
     this.initShowDetailsEventListener(btnDetails);
     this.initRemoveTodoEventListener(btnRemove);
+    this.initEditTodoEventListener(btnEdit);
     li.append(btnComplete, title, btnDetails, date, btnEdit, btnRemove);
 
     return li;
@@ -340,6 +347,56 @@ export default class UI {
 
       detailsElement.classList.add('details--slidedown');
       btn.parentElement.appendChild(detailsElement);
+    });
+  }
+
+  static initEditTodoEventListener(btn) {
+    btn.addEventListener('click', () => {
+      let priority = undefined;
+      const todoId = btn.parentElement.dataset.id;
+      const modal = document.querySelector('.modal');
+      modal.classList.remove('is-hidden');
+      const nameInput = document.querySelector('input#task-name');
+      const descriptionInput = document.querySelector('input#task-description');
+      const dueDateInput = document.querySelector('input#task-duedate');
+      const priorityBtns = document.querySelectorAll(
+        'label[for="task-priority"] > .btn'
+      );
+      const saveBtn = document.querySelector('.btn--save');
+      const closeBtn = document.querySelector('.btn--close');
+
+      priorityBtns.forEach((btn) =>
+        btn.addEventListener('click', () => {
+          priorityBtns.forEach((btn) => btn.classList.remove('btn--active'));
+          btn.classList.add('btn--active');
+          if (btn.textContent === 'Low') priority = 3;
+          if (btn.textContent === 'Medium') priority = 2;
+          if (btn.textContent === 'High') priority = 1;
+        })
+      );
+
+      saveBtn.addEventListener('click', () => {
+        // TODO: Jeśli puste pole nic nie rób
+        Storage.renameTodo(this.getActiveProject(), todoId, nameInput.value);
+        Storage.changeDescription(
+          this.getActiveProject(),
+          todoId,
+          descriptionInput.value
+        );
+
+        Storage.changeDate(this.getActiveProject(), todoId, dueDateInput.value);
+        Storage.changePriority(this.getActiveProject(), todoId, priority);
+
+        nameInput.value = '';
+        descriptionInput.value = '';
+        dueDateInput.value = '';
+
+        modal.classList.add('is-hidden');
+      });
+
+      closeBtn.addEventListener('click', () => {
+        modal.classList.add('is-hidden');
+      });
     });
   }
 

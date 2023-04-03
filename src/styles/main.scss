@@ -102,6 +102,19 @@ body {
         padding: .8rem;
         margin-bottom: .8rem;
         background-color: #eee;
+        border-left: 5px solid transparent;
+
+        &--priority-low {
+            border-color: green;
+        }
+
+        &--priority-medium {
+            border-color: yellow;
+        }
+
+        &--priority-high {
+            border-color: red;
+        }
 
         &--completed {
             position: relative;
@@ -177,23 +190,21 @@ body {
     }
 
     &__content {
-         background-color: #fefefe; 
-         margin: 12% auto;
-         padding: 2rem;
-         border: 1px solid #888;
-         width: 50%;
-         display: flex;
-         flex-direction: column;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        margin: 12% auto;
+        padding: 2rem;
+        background-color: #fefefe; 
+        border: 1px solid #888;
+        border-radius: 5px;
+
     }
 
     &__label {
         width: 100%;
         margin-bottom: 1rem;
         font-weight: bold;
-
-        &--center {
-            text-align: center;
-        }
     }
 
     &__input {
@@ -239,14 +250,32 @@ body {
     }
 
     &--save {
-        background-color: rgb(90, 213, 90);
-        color: white;
-        border: none
+        border: 3px solid rgb(90, 213, 90);
+        background: transparent;
     }
     &--close {
         background-color: rgb(227, 47, 47);
         color: white;
         border: none
+    }
+    &--priority-low {
+        background-color: rgb(66, 163, 66);
+        color: white;
+        border: none
+    }
+    &--priority-medium {
+        background-color: rgb(231, 200, 66);
+        color: white;
+        border: none
+    }
+    &--priority-high {
+        background-color: rgb(226, 43, 43);
+        color: white;
+        border: none
+    }
+
+    &--active {
+        font-weight: bold;
     }
 
     &:hover {

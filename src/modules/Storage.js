@@ -80,6 +80,12 @@ export default class Storage {
     this.setTodoList(todoList);
   }
 
+  static changePriority(project, id, priority) {
+    const todoList = this.getTodoList();
+    todoList.getProject(project).getTodo(id).setPriority(priority);
+    this.setTodoList(todoList);
+  }
+
   static setComplete(project, id) {
     const todoList = this.getTodoList();
     const todo = todoList.getProject(project).getTodo(id);
