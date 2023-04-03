@@ -87,6 +87,7 @@ body {
 .todos {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     &__title {
         margin-bottom: 1rem;
@@ -108,8 +109,7 @@ body {
         }
 
         &--slideright {
-            position: absolute;
-            animation: slideright 2s ease-in-out 0s 1 forwards;
+            animation: slideright 1.5s ease-in-out 0s 1 forwards;
         }
     }
 
@@ -153,6 +153,7 @@ body {
     &--slidedown {
         animation: slidedown 1s ease-in-out 0s 1 forwards;
     }
+
 }
 
 .modal {

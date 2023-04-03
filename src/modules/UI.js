@@ -163,7 +163,6 @@ export default class UI {
   }
 
   // Todo List
-
   static initTodoList() {
     const newTodoInput = document.querySelector('.todos__input-item');
     this.renderTodoList();
@@ -196,7 +195,7 @@ export default class UI {
     const btnDetails = document.createElement('button');
     const date = document.createElement('span');
     const btnEdit = document.createElement('i');
-    const btnDelete = document.createElement('i');
+    const btnRemove = document.createElement('i');
 
     li.className = 'todos__item';
     li.setAttribute('data-id', todo.getId());
@@ -220,7 +219,7 @@ export default class UI {
       'fa-solid',
       'fa-pencil'
     );
-    btnDelete.classList.add(
+    btnRemove.classList.add(
       'todos__icon',
       'icon',
       'icon--remove',
@@ -229,8 +228,8 @@ export default class UI {
     );
 
     this.initShowDetailsEventListener(btnDetails);
-
-    li.append(btnComplete, title, btnDetails, date, btnEdit, btnDelete);
+    this.initRemoveTodoEventListener(btnRemove);
+    li.append(btnComplete, title, btnDetails, date, btnEdit, btnRemove);
 
     return li;
   }
@@ -327,6 +326,9 @@ export default class UI {
     btn.addEventListener('click', () => {
       const details = document.querySelector('.todos__details');
       if (details) {
+        details.classList.remove('details--slidedown');
+        details.classList.add('details--slideup');
+
         btn.parentElement.removeChild(details);
         return;
       }
@@ -338,6 +340,19 @@ export default class UI {
             .getTodo(btn.parentElement.dataset.id)
         )
       );
+    });
+  }
+
+  static initRemoveTodoEventListener(btn) {
+    btn.addEventListener('click', () => {
+      btn.parentElement.classList.add('todos__item--slideright');
+      btn.parentElement.addEventListener('animationend', () => {
+        Storage.removeTodo(
+          this.getActiveProject(),
+          btn.parentElement.dataset.id
+        );
+        this.renderTodoList();
+      });
     });
   }
 
