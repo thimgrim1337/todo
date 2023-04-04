@@ -222,12 +222,18 @@ export default class UI {
       'fa-trash'
     );
 
+    if (todo.getIsComplete()) {
+      li.classList.add('todos__item--completed');
+      btnComplete.checked = true;
+    }
+
     if (todo.getPriority() === 1)
       li.classList.add('todos__item--priority-high');
     if (todo.getPriority() === 2)
       li.classList.add('todos__item--priority-medium');
     if (todo.getPriority() === 3) li.classList.add('todos__item--priority-low');
 
+    this.initCompleteTodoEventListener(btnComplete);
     this.initShowDetailsEventListener(btnDetails);
     this.initRemoveTodoEventListener(btnRemove);
     this.initEditTodoEventListener(btnEdit);
@@ -359,24 +365,24 @@ export default class UI {
       );
 
       saveBtn.addEventListener('click', () => {
-        if (nameInput.value != '')
+        if (nameInput.value !== '')
           Storage.renameTodo(this.getActiveProject(), todoId, nameInput.value);
 
-        if (descriptionInput.value != '')
+        if (descriptionInput.value !== '')
           Storage.changeDescription(
             this.getActiveProject(),
             todoId,
             descriptionInput.value
           );
 
-        if (dueDateInput.value != '')
+        if (dueDateInput.value !== '')
           Storage.changeDate(
             this.getActiveProject(),
             todoId,
             dueDateInput.value
           );
 
-        if (priority != undefined)
+        if (priority !== undefined)
           Storage.changePriority(this.getActiveProject(), todoId, priority);
 
         nameInput.value = '';
@@ -403,6 +409,16 @@ export default class UI {
         );
         this.renderTodoList();
       });
+    });
+  }
+
+  static initCompleteTodoEventListener(checkbox) {
+    checkbox.addEventListener('click', () => {
+      Storage.setComplete(
+        this.getActiveProject(),
+        checkbox.parentElement.dataset.id
+      );
+      this.renderTodoList();
     });
   }
 

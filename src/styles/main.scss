@@ -125,7 +125,6 @@ body {
         }
 
         &--completed {
-            position: relative;
             color: #bbb;
         }
 
@@ -146,10 +145,6 @@ body {
         cursor: pointer;
     }
 
-    &__btn {
-
-    }
-
     &__input-item {
         padding: .2rem .5rem;
 
@@ -165,6 +160,9 @@ body {
 
 .details {
     overflow: hidden;
+    border-top: 2px solid #ddd;
+    padding-top: .5rem;
+
 
     &__title {
         margin-bottom: .8rem;
@@ -297,15 +295,6 @@ body {
          cursor: pointer;
     }
 }
-
-.line {
-    background-color: #aaa;;
-    width: 98%;
-    height: 1px;
-    position: absolute;
-    top: 50%;
-}
-
 
 .is-hidden {
     display: none;
