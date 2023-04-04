@@ -58,9 +58,11 @@ body {
         padding: .5rem 0;
         font-size: 1.3rem;
         cursor: pointer;
+        transition: .3s;
+
 
         &:hover {
-            background-color: #2613f2ba;
+            background-color: #6A7FDB;
         }
     }
 
@@ -76,6 +78,10 @@ body {
         color: white;
         background: transparent;
         border: none;
+
+        &:hover {
+            font-weight: bolder;
+        }
     }
 
     &__input {
@@ -88,6 +94,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    color: #162521;
 
     &__title {
         margin-bottom: 1rem;
@@ -103,6 +110,7 @@ body {
         margin-bottom: .8rem;
         background-color: #eee;
         border-left: 5px solid transparent;
+        transition: .3s;
 
         &--priority-low {
             border-color: green;
@@ -124,6 +132,10 @@ body {
         &--slideright {
             animation: slideright 1.5s ease-in-out 0s 1 forwards;
         }
+
+        &:hover {
+            background-color: #DDDFDF;
+        }
     }
 
     &__name {
@@ -135,13 +147,10 @@ body {
     }
 
     &__btn {
-        border: 1px solid black;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+
     }
 
     &__input-item {
-        color: #ccc;
         padding: .2rem .5rem;
 
         &:focus {
@@ -155,8 +164,6 @@ body {
 }
 
 .details {
-    border-top: 2px solid #ddd;
-    padding: 1rem 0;
     overflow: hidden;
 
     &__title {
@@ -165,11 +172,11 @@ body {
     }
 
     &--slidedown {
-        animation: slidedown 1s ease-in-out 0s 1 forwards;
+        animation: slidedown 1s ease-in-out 0s 1 forwards; 
     }
 
     &--slideup {
-        animation: slideup 1s ease-in-out 0s 1;
+        animation: slideup 1s ease-in-out 0s 1 forwards;
     }
 
 }
@@ -186,29 +193,28 @@ body {
 
     &__title {
         margin-bottom: 1rem;
-        align-self: center;
     }
 
     &__content {
-        width: 30%;
+        width: 25%;
         display: flex;
         flex-direction: column;
         margin: 12% auto;
         padding: 2rem;
         background-color: #fefefe; 
-        border: 1px solid #888;
+        border: 1px solid #DDDFDF;
         border-radius: 5px;
-
+        box-shadow: #7c7a7a 1px 1px 20px 0px;
     }
 
     &__label {
-        width: 100%;
         margin-bottom: 1rem;
         font-weight: bold;
     }
 
     &__input {
         width: 100%;
+        padding: .5rem;
     }
 
     &__btn {
@@ -234,7 +240,19 @@ body {
 }
 
 .btn {
-    padding: .4rem;
+    background-color: #FFFFFF;
+    border: 1px solid rgb(209,213,219);
+    border-radius: .5rem;
+    color: #162521;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: .75rem 1rem;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    text-align: center;
+    text-decoration: none #D1D5DB solid;
+    text-decoration-thickness: auto;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     transition: .1s;
 
     &__icon {
@@ -250,28 +268,24 @@ body {
     }
 
     &--save {
-        border: 3px solid rgb(90, 213, 90);
-        background: transparent;
+        border: 2px solid rgb(66, 163, 66);
+        width: 200px;
     }
+
     &--close {
-        background-color: rgb(227, 47, 47);
-        color: white;
-        border: none
+        border: 2px solid rgb(226, 43, 43);
+        width: 200px;
+
     }
     &--priority-low {
-        background-color: rgb(66, 163, 66);
-        color: white;
-        border: none
+        border: 2px solid rgb(66, 163, 66);
+        
     }
     &--priority-medium {
-        background-color: rgb(231, 200, 66);
-        color: white;
-        border: none
+        border: 2px solid rgb(231, 200, 66);
     }
     &--priority-high {
-        background-color: rgb(226, 43, 43);
-        color: white;
-        border: none
+        border: 2px solid rgb(226, 43, 43);
     }
 
     &--active {
@@ -279,7 +293,7 @@ body {
     }
 
     &:hover {
-        font-weight: bolder;
+        transform: scale(1.1);
          cursor: pointer;
     }
 }
@@ -295,6 +309,10 @@ body {
 
 .is-hidden {
     display: none;
+}
+
+.align-center {
+    align-self: center;
 }
 
 .flex-grow {

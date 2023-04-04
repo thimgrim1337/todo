@@ -165,13 +165,8 @@ export default class UI {
   // Todo List
   static initTodoList() {
     const newTodoInput = document.querySelector('.todos__input-item');
+    this.initCreateTodoEventListener(newTodoInput);
     this.renderTodoList();
-    newTodoInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        this.createTodo(e.target.value);
-        e.target.value = '';
-      }
-    });
   }
 
   static renderTodoList() {
@@ -328,25 +323,13 @@ export default class UI {
     return details;
   }
 
-  static initShowDetailsEventListener(btn) {
-    btn.addEventListener('click', () => {
-      const details = document.querySelector('.todos__details');
-      if (details) {
-        details.classList.remove('details--slidedown');
-        details.classList.add('details--slideup');
-        details.addEventListener('animationend', () => {
-          details.remove();
-        });
-        return;
+  //TodoList Eventlisteners
+  static initCreateTodoEventListener(input) {
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.value !== '') {
+        this.createTodo(e.target.value);
+        e.target.value = '';
       }
-      const detailsElement = this.renderDetails(
-        this.todoList
-          .getProject(this.getActiveProject())
-          .getTodo(btn.parentElement.dataset.id)
-      );
-
-      detailsElement.classList.add('details--slidedown');
-      btn.parentElement.appendChild(detailsElement);
     });
   }
 
@@ -376,22 +359,32 @@ export default class UI {
       );
 
       saveBtn.addEventListener('click', () => {
-        // TODO: Jeśli puste pole nic nie rób
-        Storage.renameTodo(this.getActiveProject(), todoId, nameInput.value);
-        Storage.changeDescription(
-          this.getActiveProject(),
-          todoId,
-          descriptionInput.value
-        );
+        if (nameInput.value != '')
+          Storage.renameTodo(this.getActiveProject(), todoId, nameInput.value);
 
-        Storage.changeDate(this.getActiveProject(), todoId, dueDateInput.value);
-        Storage.changePriority(this.getActiveProject(), todoId, priority);
+        if (descriptionInput.value != '')
+          Storage.changeDescription(
+            this.getActiveProject(),
+            todoId,
+            descriptionInput.value
+          );
+
+        if (dueDateInput.value != '')
+          Storage.changeDate(
+            this.getActiveProject(),
+            todoId,
+            dueDateInput.value
+          );
+
+        if (priority != undefined)
+          Storage.changePriority(this.getActiveProject(), todoId, priority);
 
         nameInput.value = '';
         descriptionInput.value = '';
         dueDateInput.value = '';
 
         modal.classList.add('is-hidden');
+        this.renderTodoList();
       });
 
       closeBtn.addEventListener('click', () => {
@@ -413,11 +406,33 @@ export default class UI {
     });
   }
 
+  static initShowDetailsEventListener(btn) {
+    btn.addEventListener('click', () => {
+      const details = document.querySelector('.todos__details');
+      if (details) {
+        details.classList.remove('details--slidedown');
+        details.classList.add('details--slideup');
+        details.addEventListener('animationend', () => {
+          details.remove();
+        });
+        return;
+      }
+      const detailsElement = this.renderDetails(
+        this.todoList
+          .getProject(this.getActiveProject())
+          .getTodo(btn.parentElement.dataset.id)
+      );
+
+      detailsElement.classList.add('details--slidedown');
+      btn.parentElement.appendChild(detailsElement);
+    });
+  }
+
   static makeFieldEditable(e) {
     const currentElement = e.target;
     const currentValue = e.target.textContent;
 
-    const input = UI.getInput(currentElement);
+    const input = UI.getInput();
 
     e.target.parentElement.replaceChild(input, currentElement);
     input.value = currentValue;
@@ -432,7 +447,8 @@ export default class UI {
         currentElement.textContent = newValue;
         e.target.parentElement.replaceChild(currentElement, input);
 
-        UI.changeValue(currentElement, newValue);
+        Storage.renameProject(currentValue, newValue);
+        UI.renderProjectsList();
 
         input.removeEventListener('keydown', editField);
         input.removeEventListener('focusout', editField);
@@ -440,28 +456,9 @@ export default class UI {
     }
   }
 
-  static getInput(element) {
-    if (element.hasAttribute('data-description'))
-      return document.createElement('textarea');
-    if (element.hasAttribute('data-date')) {
-      const datetime = document.createElement('input');
-      datetime.type = 'date';
-      return datetime;
-    }
-
+  static getInput() {
     const input = document.createElement('input');
     input.classList.add('projects__input');
     return input;
-  }
-
-  static changeValue(element, value) {
-    const id = element.parentElement.hasAttribute('data-id')
-      ? element.parentElement.getAttribute('data-id')
-      : undefined;
-    if (element.hasAttribute('data-name')) this.renameProject(element, value);
-    if (element.hasAttribute('data-title')) this.renameTodo(id, value);
-    if (element.hasAttribute('data-description'))
-      this.changeDescription(id, value);
-    if (element.hasAttribute('data-date')) this.changeDate(id, value);
   }
 }
