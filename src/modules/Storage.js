@@ -89,7 +89,6 @@ export default class Storage {
   static setComplete(project, id) {
     const todoList = this.getTodoList();
     const todo = todoList.getProject(project).getTodo(id);
-    console.log(project);
     todo.setComplete();
 
     if (todo.getIsComplete()) todoList.getProject('Completed').setTodo(todo);
